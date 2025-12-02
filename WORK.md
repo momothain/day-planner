@@ -1,4 +1,9 @@
 # log
+## 12/2/25
+
+- core aggregation of duration by task and tags (exploded such that a single task will "repeat" counts toward all assoc. tags)
+
+
 ## 10/7/25
 - fixed the errors. Actually, Task was erroring because of the `kind alias="type"` causing the code's sets `kind = "xxx"` not registering
     - solved with `model_config = dict(populate_by_name=True)`
@@ -12,6 +17,7 @@
 - [x] 24hours in a day max (handled by MinSinceMidnight maxval = 1439)
 - [] non-overlap time
 - [] order tasks by time
+
 
 ## 10/2/25
 ### actual 
