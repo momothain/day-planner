@@ -1,6 +1,8 @@
 # log
-## 12/2/25
-
+## 12/2/25, 0930-1200
+- pllaning in readme
+- refactor paths,const to Config. util for log prepend. write logs added to __str__
+    - models.31 (dur comp prop): BUG found thru trying to agg duration and printing NaN, not caught through MinSinceMidnight type ://
 - core aggregation of duration by task and tags (exploded such that a single task will "repeat" counts toward all assoc. tags)
 
 
