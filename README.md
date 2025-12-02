@@ -1,12 +1,25 @@
 # day-planner
-## venv
+## init venv
 ```
 python3 -m venv .venv
 source .venv/bin/activate
+pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
+# TODO
+## Aggregation / Statistics
+- aggregation of duration by task and tags (exploded such that a single task will "repeat" counts toward all assoc. tags)
+- pyd -> pandas
+- TimeUnion -> duration
 
+## UI: Visualization + Interactive Elements
+- makes CRUD (below) feel more motivated, as you have a tangible sense of the plans and can tweak it for the day. UI will make the testing easier as well.
+
+## Database Management / Backend CRUD
+- sort tasks by time
+- insert in order
+- Anchor to real calendar/dates
 
 
 # DESIGN - Daily Schedule – 24 Hours
