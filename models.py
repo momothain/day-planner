@@ -1,4 +1,7 @@
 # model_fmt.py
+from util import prepend_log
+from config import Config
+
 import json
 import re
 from typing import List, Literal, Annotated, Optional, Self, Union
@@ -7,6 +10,7 @@ from pathlib import Path
 import csv
 
 """Time is minutes-since-midnight. Date, timezone in Plan."""
+
 
 MinSinceMidnight = Annotated[
     int, Field(ge=0, le=1439)
@@ -24,7 +28,7 @@ class TimeBlock(Time):
     @computed_field
     @property
     def duration(self) -> MinSinceMidnight:
-        self.end - self.start
+        return self.end - self.start
     # duration: MinSinceMidnight = Field(
     #     default_factory=lambda data: data["end"] - data["start"]
     # )
@@ -105,7 +109,9 @@ class Task(BaseModel):
         
     ## Overrides
     def __str__(self):
-        return self.model_dump_json(indent=2, exclude_none=True)
+        str = self.model_dump_json(indent=2, exclude_none=True)
+        prepend_log(Config.test_output / "task.log", str)
+        return str
 
 
 def test_task():
@@ -172,15 +178,16 @@ class Plan(BaseModel):
     
     ## Overrides
     def __str__(self):
-        return self.model_dump_json(indent=2, exclude_none=True)
+        str = self.model_dump_json(indent=2, exclude_none=True)
+        prepend_log(Config.test_output / "plan.log", str)
+        return str
 
 
 def test_plan():
     print("START test_plan(): ===============")
     
-    ex = Path("./data/schedule-example.csv")
-    p1 = Plan.read_csv(ex)
-    print(p1.model_dump_json(indent=2))
+    p1 = Plan.read_csv(Config.plan_example)
+    print(p1.__str__())
     
     print("END test_plan(): ===============")
     print()
