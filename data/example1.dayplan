@@ -1,0 +1,16 @@
+Date=2025-12-03, Timezone=EST
+
+Task,Tags,Time,Done,Cancelled
+Pre-Sleep, Basics;Sleep, 00:20-01:20,False,True
+Sleep, Basics;Sleep, 0000-0745,True
+Morning, Basics;Sleep, 09:20-10:00,False,True
+Breakfast, Basics;Eating, 30,False,True
+Work at Dad's office, Work, 0900-1300,True
+Lunch, Break;Basics;Eating, 45,True
+Commute, Work, 30+30,True
+Yog, Health;Spirituality, 60,False
+Elden Ring, Break; Video Game; Flow; Difficult; Hobby, 90,False
+Dinner, Basics;Eating, 30,False
+Maplestory, game;relationship;thany, 90,False
+Shower,,30,f
+Pre-sleep, ,30,f

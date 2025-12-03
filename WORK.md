@@ -1,4 +1,11 @@
 # log
+## 12/3/25, 1610-1850
+- planning more agg, DayPlan (.dayplan) concrete Vs. Plan(Template) generic schedule w/ (gpt)[https://chatgpt.com/g/g-p-68dda8de895c8191861a958222f91b1e-interactive-day-task-planner-app/c/6930ab00-cf20-8327-b23b-78b022f2eb18]
+- task, tag, 2ndary metric plan details
+- impl reading dayplan
+    - wrote out example1.dayplan w/ today real data -> led to Done checkbox t/f, Cancelled, 
+    - date handling w/ dateutil -> datetime
+    - added a stupid extra 30+30 case, impl not bad, debug took more time.
 ## 12/2/25, 930-1200
 - pllaning in readme
 - refactor paths,const to Config. util for log prepend. write logs added to __str__

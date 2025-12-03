@@ -1,4 +1,5 @@
 # model_fmt.py
+import datetime
 from util import prepend_log
 from config import Config
 
@@ -8,6 +9,8 @@ from typing import List, Literal, Annotated, Optional, Self, Union
 from pydantic import BaseModel, Field, computed_field, field_validator, model_validator
 from pathlib import Path
 import csv
+import dateutil
+from io import StringIO
 
 """Time is minutes-since-midnight. Date, timezone in Plan."""
 
@@ -92,19 +95,26 @@ class Task(BaseModel):
             return t
         elif isinstance(t, str):
             t = t.strip()
-            if re.match(r"\d\d:\d\d[-,]\d\d:\d\d", t):
+            timerange = re.fullmatch(r"^(\d{2}):?(\d{2})[-,](\d{2}):?(\d{2})$", t)
+            if timerange:
+                h1,m1 ,h2,m2 = map(int, timerange.groups())
                 return TimeBlock(
                     kind="block",
-                    start=int(t[0:2]) * 60 + int(t[3:5]),
-                    end=int(t[0 + 6 : 2 + 6]) * 60 + int(t[3 + 6 : 5 + 6]),
+                    start=h1 * 60 + m1,
+                    end=h2 * 60 + m2,
                 )
-            elif re.match(r"\d+", t):
-                return TimeDuration(kind="duration", duration=int(t))
+            elif re.fullmatch(r"\d+(\s*\+\s*\d+)*", t):
+                nums = re.split(r"\s*\+\s*", t)
+                dur = sum(int(n) for n in nums)
+                return TimeDuration(kind="duration", duration=dur)
+            
+            # elif re.fullmatch(r"\d+", t):
+            #     return TimeDuration(kind="duration", duration=int(t))
             # elif re.match(r"\d+[-,]\d+", t):
             #     ... #return TimeDurationRange()
             
         raise ValueError(
-            f"Couldn't read {t}. Please use 'xx:xx-xx:xx', duration, 'xx-xx' duration range"
+            f"Couldn't read {t!r}. Please use 'xx:xx-xx:xx', duration, 'xx-xx' duration range"
         )
         
     ## Overrides
@@ -150,7 +160,7 @@ def test_task():
 class Plan(BaseModel):
     tasks: List[Task]
     timezone: str = None  # type/val?
-    date: str = None  # type # means its instantiated
+    date: str | datetime.datetime = None  # type # means its instantiated
     start_time: MinSinceMidnight = (
         0  # aka "midnight" for our minutes-since-midnight time representation
     )
@@ -174,6 +184,34 @@ class Plan(BaseModel):
             #     print(row)
             #     Task.model_validate(row)
             return Plan(tasks=tasks)
+    
+    @classmethod
+    def read_dayplan(cls, fp: Path) -> Self:
+        if fp.suffix != ".dayplan":
+            raise ValueError(f"fp must have .dayplan extension. Got {fp.absolute()} with suffix {fp.suffix}")
+        print(f"reading day Plan from {fp}")
+        with fp.open(mode="r") as f:
+            raw = f.read()
+            header_raw,dayplan_raw = raw.split(Config.DAYPLAN_DELIM)
+            # header -> date, timezone
+            date_raw,timezone_raw = header_raw.split(Config.HEADER_DELIM)
+            date_str = date_raw.lower().strip().split("date=")[1]
+            date: datetime.datetime = dateutil.parser.parse(date_str)
+            if timezone_raw:
+                timezone = timezone_raw.lower().strip().split("timezone=")[1]
+            else:
+                timezone=None
+            
+            # csv -> task rows
+            dayplan_f = StringIO(dayplan_raw)
+            reader = csv.DictReader(dayplan_f)
+            tasks = [Task.model_validate(row) for row in reader]            
+            
+            return Plan(date=date,timezone=timezone, tasks=tasks)
+    def read_dayplan_date_read_test():
+        a="dAte=2025-12-03"
+        assert (a.lower().strip().split("date=")[1]) == "2025-12-03"
+    
         
     
     ## Overrides
@@ -192,11 +230,14 @@ def test_plan():
     print("END test_plan(): ===============")
     print()
     return
-
+def read_dayplan_test():
+    dp = Plan.read_dayplan(Config.dayplan_example)
+    print(dp.__str__())
 ### Features
 
 ### Run Test
 if __name__ == "__main__":
     # t: Time = 
-    test_task()
-    test_plan()
+    # test_task()
+    # test_plan()
+    read_dayplan_test()

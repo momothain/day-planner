@@ -8,10 +8,27 @@ pip install -r requirements.txt
 ```
 
 # TODO
+## Models / Data Structure
+- [x] .dayplan concrete instance
+    - [x] read parser
+        - [] review
+    - [] pydantic model -> write json
+- []? Tags can have relations. e.g. "Eating" Tag => "Basics". so can skip writing basics when there is eating, but could count for aggregation stats for basics..?
+- []! In general, if Task (concrete) has appeared before w/ certain Tags, perchance if no Tags are assigned, all prev assoc Tags will be assigned to the new instance. if clustering and cleanup is done, that will help.....
+
 ## Aggregation / Statistics
-- aggregation of duration by task and tags (exploded such that a single task will "repeat" counts toward all assoc. tags)
-- pyd -> pandas
-- TimeUnion -> duration
+- [x] aggregation of duration by task and tags (exploded such that a single task will "repeat" counts toward all assoc. tags)
+- [x] pyd -> pandas
+- [x] TimeUnion -> duration
+- [] add Task.name to Task.tags before explosion so it counts as a Tag for aggregation
+- [] for .dayplan inst, delete rows where Cancelled=true. ignore `done`
+### secondary metrics
+- \# unique tasks 
+- Distribution/plot of task x total_occurences
+- ! Since Tags of Tasks can intersect and be double-counted, we should measure the `quantity, %overlap` of Tasks for `pairs of Tasks` -> `cluster` Tags for fewer buckets and more meaningful stats & plots. 
+    - can also be semantic a la PartPredictor.
+    - motivation: the occurence and amount of Tags for a Task depends on the human's whim on the day to do more data labelling
+
 
 ## UI: Visualization + Interactive Elements
 - makes CRUD (below) feel more motivated, as you have a tangible sense of the plans and can tweak it for the day. UI will make the testing easier as well.

@@ -7,8 +7,10 @@ class Config:
     test_output.mkdir(exist_ok=True)
     
     plan_example = Path("./data/schedule-example.csv")
-    
+    dayplan_example = Path("./data/example1.dayplan")
     
     ### CONSTANTS
     LOG_DELIM = "\n\n======\n\n"
+    DAYPLAN_DELIM = "\n\n"
+    HEADER_DELIM = ","
     
