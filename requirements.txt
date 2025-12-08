@@ -1,1 +1,3 @@
 pydantic
+pandas
+python-dateutil
