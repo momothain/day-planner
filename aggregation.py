@@ -3,18 +3,15 @@ from models import Plan, Task
 
 import pandas as pd
 
-"""12/2- Plan->df cols: ['name', 'time', 'tags', 'freq', 'subtasks', 'details']"""
+"""12/2- Plan->df.columns: ['name', 'time', 'tags', 'freq', 'subtasks', 'details']"""
 def plan_to_df(plan: Plan):
     task_dicts = [task.model_dump() for task in plan.tasks]
     df = pd.DataFrame(task_dicts)
-    if plan.start_time != 0:
-        # log.warning("plan.start_time is {plan.start_time}. handle times appropriately? no need actually that would be really weird to aggregate specific time of day but ig you could do it")
-        ...
-    # print(df["time"][0])
+
     ### CONVERT TIME TO DURATION
     df["time"] = df["time"].apply(lambda dc: dc["duration"])
     df = df.rename(columns={"time":"duration"})
-    # print(df.columns) # Index(['name', 'time', 'tags', 'freq', 'subtasks', 'details'], dtype='object')
+
     return df
 
 def agg_duration_by_task(plan_df: pd.DataFrame):

@@ -32,9 +32,6 @@ class TimeBlock(Time):
     @property
     def duration(self) -> MinSinceMidnight:
         return self.end - self.start
-    # duration: MinSinceMidnight = Field(
-    #     default_factory=lambda data: data["end"] - data["start"]
-    # )
 
     #
     @model_validator(mode="after")
@@ -108,8 +105,7 @@ class Task(BaseModel):
                 dur = sum(int(n) for n in nums)
                 return TimeDuration(kind="duration", duration=dur)
             
-            # elif re.fullmatch(r"\d+", t):
-            #     return TimeDuration(kind="duration", duration=int(t))
+            #TODO: req TimeDurationRange class
             # elif re.match(r"\d+[-,]\d+", t):
             #     ... #return TimeDurationRange()
             
