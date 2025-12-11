@@ -1,4 +1,10 @@
 # log
+## 12
+- logger w/ line numbers, src fp, levels
+- [] writeout stats structured fmt
+- claude code / ..
+
+
 ## 12/3/25, 1610-1850
 - planning more agg, DayPlan (.dayplan) concrete Vs. Plan(Template) generic schedule w/ (gpt)[https://chatgpt.com/g/g-p-68dda8de895c8191861a958222f91b1e-interactive-day-task-planner-app/c/6930ab00-cf20-8327-b23b-78b022f2eb18]
 - task, tag, 2ndary metric plan details

@@ -8,6 +8,10 @@ pip install -r requirements.txt
 ```
 
 # TODO
+## Infra
+- [x] Config for filepaths, const
+- logger w/ line numbers, src fp, levels
+
 ## Models / Data Structure
 - [x] .dayplan concrete instance
     - [x] read parser
@@ -21,7 +25,8 @@ pip install -r requirements.txt
 - [x] pyd -> pandas
 - [x] TimeUnion -> duration
 - [] add Task.name to Task.tags before explosion so it counts as a Tag for aggregation
-- [] for .dayplan inst, delete rows where Cancelled=true. ignore `done`
+- [] for .dayplan inst, delete rows where Cancelled=true. ignore `done`'
+- [] writeout stats structured fmt
 ### secondary metrics
 - \# unique tasks 
 - Distribution/plot of task x total_occurences
